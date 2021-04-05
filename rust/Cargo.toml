@@ -6,7 +6,7 @@ categories = ["wasm"]
 edition = "2018"
 
 [lib]
-create-type = ["cdylib"]
+crate-type = ["cdylib"]
 
 [profile.release]
 lto = true
@@ -15,3 +15,7 @@ lto = true
 image = "0.23.14"
 base64 = "0.13.0"
 num-complex = "0.4.0"
+
+console_error_panic_hook = "0.1.6"
+wee_alloc = { version = "0.4.5", optional = true }
+wasm-bindgen = { version = "0.2.73" }

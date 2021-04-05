@@ -2,11 +2,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const WasmPackPlugin = require('@wasm-tool/wasm-pack-plugin')
+
 module.exports = {
     mode: 'development',
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
+        globalObject: 'this'
     },
     devServer: {
         open: true,
@@ -16,9 +19,10 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: 'index.html',
         }),
-
-        // Add your plugins here
-        // Learn more obout plugins from https://webpack.js.org/configuration/plugins/
+        new WasmPackPlugin({
+            crateDirectory: path.join(__dirname, './rust'),
+            outDir: path.join(__dirname, './pkg'),
+        })
     ],
     module: {
         rules: [
@@ -31,4 +35,7 @@ module.exports = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+    experiments: {
+        asyncWebAssembly: true,
+    }
 };

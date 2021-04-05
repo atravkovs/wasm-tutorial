@@ -44,13 +44,16 @@ fn generate_julia_set(
     let scale_x = 3.0 / width as f32;
     let scale_y = 3.0 / height as f32;
 
+    let red_scale = 255.0 / width as f32;
+    let blue_scale = 255.0 / height as f32;
+
     let c = Complex::new(real, imaginary);
 
     let mut image_buffer = ImageBuffer::new(width, height);
 
     for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
-        let r = (0.3 * x as f32) as u8;
-        let b = (0.3 * y as f32) as u8;
+        let r = (red_scale * x as f32) as u8;
+        let b = (blue_scale * y as f32) as u8;
 
         let cx = y as f32 * scale_x - 1.5;
         let cy = x as f32 * scale_y - 1.5;

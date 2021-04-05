@@ -1,14 +1,39 @@
-import Julia from './julia';
+import Julia from "./julia";
 
 const loadImage = async () => {
-  const output = document.getElementById('output');
+  const output = document.getElementById("output");
+  const submit = document.getElementById("submit");
+
+  const widthElement = document.getElementById("width");
+  const heightElement = document.getElementById("height");
+  const realElement = document.getElementById("real");
+  const imaginaryElement = document.getElementById("imaginary");
 
   const lib = await Julia;
-  const data = { width: 400, height: 400, realPart: -0.8, imaginaryPart: 0.156};
-  const base64 = await lib.generate(data);
-  const imgPath = 'data:image/png;base64,' + base64;
 
-  output.setAttribute('src', imgPath);
+  submit.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    if (
+      !widthElement.value ||
+      !heightElement.value ||
+      !realElement.value ||
+      !imaginaryElement.value
+    ) {
+      return;
+    }
+
+    const data = {
+      width: +widthElement.value,
+      height: +heightElement.value,
+      realPart: +realElement.value,
+      imaginaryPart: +imaginaryElement.value,
+    };
+    const base64 = await lib.generate(data);
+    const imgPath = "data:image/png;base64," + base64;
+
+    output.setAttribute("src", imgPath);
+  });
 };
 
-window.addEventListener('DOMContentLoaded', loadImage, false);
+window.addEventListener("DOMContentLoaded", loadImage, false);

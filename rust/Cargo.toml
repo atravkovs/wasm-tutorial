@@ -1,0 +1,17 @@
+[package]
+name = "julia-base64"
+version = "0.1.0"
+authors = ["Artjoms Travkovs <atravkovs@gmail.com>"]
+categories = ["wasm"]
+edition = "2018"
+
+[lib]
+create-type = ["cdylib"]
+
+[profile.release]
+lto = true
+
+[dependencies]
+image = "0.23.14"
+base64 = "0.13.0"
+num-complex = "0.4.0"

@@ -3,6 +3,7 @@ import Julia from "./julia";
 const loadImage = async () => {
   const output = document.getElementById("output");
   const submit = document.getElementById("submit");
+  const progress = document.getElementById("progress");
 
   const widthElement = document.getElementById("width");
   const heightElement = document.getElementById("height");
@@ -33,6 +34,10 @@ const loadImage = async () => {
     const imgPath = "data:image/png;base64," + base64;
 
     output.setAttribute("src", imgPath);
+  });
+
+  document.addEventListener("update-progress", (event) => {
+    progress.value = event.detail.message();
   });
 };
 

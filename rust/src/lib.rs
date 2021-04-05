@@ -24,6 +24,11 @@ pub fn julia_base64(width: u32, height: u32, real: f32, imaginary: f32) -> JsVal
     return JsValue::from_str(&base64);
 }
 
+#[wasm_bindgen(module = "/src/progress.js")]
+extern "C" {
+    pub fn update_progress(percentage: u32);
+}
+
 fn base64_png(img: DynamicImage) -> ImageResult<String> {
     let mut buf = String::from("");
 
@@ -49,8 +54,11 @@ fn generate_julia_set(
 
     let c = Complex::new(real, imaginary);
 
+    let total = width * height;
     let mut image_buffer = ImageBuffer::new(width, height);
 
+    let mut last_percentage = 0;
+    let mut processed = 0;
     for (x, y, pixel) in image_buffer.enumerate_pixels_mut() {
         let r = (red_scale * x as f32) as u8;
         let b = (blue_scale * y as f32) as u8;
@@ -63,6 +71,13 @@ fn generate_julia_set(
         while i < 255 && z.norm() <= 2.0 {
             z = z * z + c;
             i += 1;
+        }
+
+        processed += 1;
+        let percentage = processed * 100 / total;
+        if percentage > last_percentage {
+            last_percentage = percentage;
+            update_progress(percentage);
         }
 
         *pixel = Rgb([r, i as u8, b]);
